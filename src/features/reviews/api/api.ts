@@ -85,6 +85,8 @@ export const deleteReview = async (articleId: number, reviewId: number) => {
 export async function fetchHotReviewsByDate(
   dateISO: string
 ): Promise<ReviewListItem[]> {
-  const res = await api.get<HotReviewsResponse>(`/hot-reviews?date=${dateISO}`);
+  const res = await api.get<HotReviewsResponse>(
+    `reviews/hot-reviews?date=${dateISO}`
+  );
   return res.data.result ?? [];
 }
