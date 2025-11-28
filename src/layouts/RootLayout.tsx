@@ -10,11 +10,9 @@ function RootLayout() {
         <Outlet />
         <ScrollRestoration
           getKey={(location) => {
-            // AdminPage에서는 pathname만 사용하여 searchParams 변경 시 스크롤 유지
             if (location.pathname === '/admin') {
               return location.pathname;
             }
-            // 다른 페이지에서는 기본 동작 (pathname + search)
             return location.key;
           }}
         />

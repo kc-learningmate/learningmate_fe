@@ -18,9 +18,7 @@ import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
 
 type Props = {
-  /** 모달 내에서 직접 사용할 때 articleId를 props로 전달 (라우터 없이도 동작) */
   articleId?: number;
-  /** 스크랩 상태가 바뀌면 부모(목록)에 알림 */
   onScrapChange?: (articleId: number, next: boolean) => void;
 };
 
@@ -92,15 +90,12 @@ export default function ArticleDetail({
       <article className='mx-auto mt-2 w-full max-w-5xl px-5'>
         <header className='w-full mt-4'>
           {' '}
-          {/* ← 위 여백 추가 */}
           <div className='flex flex-wrap items-center justify-between gap-3'>
             <h1 className='text-balance text-xl font-extrabold leading-tight md:text-2xl'>
               {article.title}
             </h1>
 
-            {/* 제목 오른쪽: 키워드 뱃지 + 날짜 뱃지 */}
             <div className='flex items-center gap-2'>
-              {/* 키워드 뱃지 */}
               {article.keyword?.name && (
                 <span className='inline-flex items-center gap-1.5 rounded-full bg-yellow-50 px-2.5 py-1 text-xs font-medium text-yellow-800 ring-1 ring-yellow-200'>
                   <RiNewspaperLine className='h-3.5 w-3.5 text-yellow-700' />
@@ -108,7 +103,6 @@ export default function ArticleDetail({
                 </span>
               )}
 
-              {/* 날짜 뱃지 */}
               <span
                 className='inline-flex items-center gap-1.5 rounded-full bg-gray-50 px-2.5 py-1 text-xs font-medium text-gray-600 ring-1 ring-gray-200'
                 title={publishedLabel}
@@ -120,15 +114,12 @@ export default function ArticleDetail({
           <Separator className='mt-4' />
         </header>
 
-        {/* 본문 + 우측 액션 레일 레이아웃 */}
         <section className='relative mt-5 grid grid-cols-1 gap-6 md:grid-cols-[1fr_56px]'>
-          {/* 본문 */}
           <div>
             <div className='prose prose-neutral max-w-none whitespace-pre-line leading-relaxed dark:prose-invert'>
               {article.content}
             </div>
 
-            {/* 모바일 액션 바 */}
             <div className='mt-6 flex items-center justify-end gap-3 md:hidden'>
               <ActionButtons
                 scrapped={scrapped}
@@ -139,7 +130,6 @@ export default function ArticleDetail({
             </div>
           </div>
 
-          {/* 데스크톱 우측 고정 액션 레일 */}
           <aside className='sticky top-24 hidden h-fit md:block'>
             <div
               className={cn(
@@ -158,7 +148,6 @@ export default function ArticleDetail({
           </aside>
         </section>
 
-        {/* 요약 모달 */}
         <ArticleModal
           summary={article.summary}
           isOpen={isModalOpen}
@@ -169,7 +158,6 @@ export default function ArticleDetail({
   );
 }
 
-/** 아이콘 액션 묶음: 재사용 가능 & 모바일/데스크톱 공용 */
 function ActionButtons({
   vertical = false,
   scrapped,
@@ -185,7 +173,6 @@ function ActionButtons({
 }) {
   return (
     <div className={cn('flex gap-3', vertical ? 'flex-col' : 'flex-row')}>
-      {/* AI 요약 모달 열기 */}
       <Tooltip>
         <TooltipTrigger asChild>
           <button
@@ -200,7 +187,6 @@ function ActionButtons({
         <TooltipContent>AI 요약 보기</TooltipContent>
       </Tooltip>
 
-      {/* 스크랩 토글 */}
       <Tooltip>
         <TooltipTrigger asChild>
           <button

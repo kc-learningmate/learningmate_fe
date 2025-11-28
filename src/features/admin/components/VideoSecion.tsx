@@ -71,7 +71,6 @@ export default function VideoSection({ keywordId, video }: Props) {
 
   return (
     <section className='space-y-6'>
-      {/* 헤더 */}
       <div className='space-y-2'>
         <h2 className='text-3xl font-bold tracking-tight'>Videos</h2>
         <p className='text-sm text-muted-foreground'>
@@ -79,9 +78,7 @@ export default function VideoSection({ keywordId, video }: Props) {
         </p>
       </div>
 
-      {/* 콘텐츠 영역 */}
       <div className='flex flex-wrap md:flex-nowrap gap-6'>
-        {/* 폼 영역 */}
         <div className='w-full md:w-auto md:flex-1 border rounded-lg p-6 bg-card shadow-sm'>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
@@ -92,7 +89,10 @@ export default function VideoSection({ keywordId, video }: Props) {
               control={form.control}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor='video-url-input' className='font-semibold'>
+                  <FieldLabel
+                    htmlFor='video-url-input'
+                    className='font-semibold'
+                  >
                     Video URL
                   </FieldLabel>
                   <Input
@@ -119,11 +119,14 @@ export default function VideoSection({ keywordId, video }: Props) {
           </form>
         </div>
 
-        {/* 비디오 플레이어 영역 */}
         <div className='w-full md:flex-1'>
           {videoId ? (
             <div className='w-full aspect-video rounded-lg overflow-hidden shadow-md border bg-card'>
-              <YouTube videoId={videoId} opts={opts} className='w-full h-full' />
+              <YouTube
+                videoId={videoId}
+                opts={opts}
+                className='w-full h-full'
+              />
             </div>
           ) : (
             <div className='w-full aspect-video flex flex-col items-center justify-center border-2 border-dashed border-muted rounded-lg bg-muted/5'>

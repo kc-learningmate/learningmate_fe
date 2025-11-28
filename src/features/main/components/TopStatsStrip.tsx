@@ -1,4 +1,3 @@
-// src/features/main/components/TopStatsStrip.tsx
 function StatItem({ title, value }: { title: string; value: string | number }) {
   return (
     <div className='rounded-xl bg-amber-200/70 px-4 py-3 sm:py-4 ring-1 ring-amber-300 shadow-[inset_0_1px_0_rgba(255,255,255,.3)]'>

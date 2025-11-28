@@ -41,7 +41,6 @@ export default function ArticleSection({ keywordId }: Props) {
   };
 
   useEffect(() => {
-    // keywordId 변경 시 jobState 및 에러 리셋
     setJobState('unknown');
     setPollingError(null);
   }, [keywordId]);
@@ -50,7 +49,6 @@ export default function ArticleSection({ keywordId }: Props) {
     let intervalId: ReturnType<typeof setInterval> | undefined;
     const batchJobKey = getBatchJobKey(keywordId);
 
-    // 초기 마운트 시 진행 중인 job 확인
     const existingJobId = localStorage.getItem(batchJobKey);
     if (existingJobId && jobState === 'unknown') {
       setJobState('active');
@@ -93,7 +91,7 @@ export default function ArticleSection({ keywordId }: Props) {
           );
           setJobState('unknown');
         }
-      }, 10000); // 10초마다 폴링
+      }, 10000);
     }
 
     return () => {

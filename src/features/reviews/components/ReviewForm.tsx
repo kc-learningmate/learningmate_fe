@@ -1,4 +1,3 @@
-// src/features/reviews/components/ReviewForm.tsx
 import type { AxiosError } from 'axios';
 import { useParams } from 'react-router';
 import {
@@ -109,7 +108,6 @@ export default function ReviewForm() {
               articleId={+articleId}
               memberId={memberId}
               onCreated={() => {
-                // ✅ 작성 직후 즉시 업데이트 화면으로 전환
                 setForceCreate(false);
               }}
             />
@@ -119,7 +117,6 @@ export default function ReviewForm() {
               memberId={memberId}
               initial={data!}
               onDeleted={() => {
-                // ✅ 삭제 직후 작성 폼으로 전환
                 setForceCreate(true);
               }}
             />

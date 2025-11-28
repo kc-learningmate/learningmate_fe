@@ -11,7 +11,7 @@ export type Keyword = {
 export type TodaysKeyword = {
   id: number;
   keyword: Keyword;
-  date: string; // YYYY-MM-DD
+  date: string;
 };
 
 export type KeywordWithVideo = {

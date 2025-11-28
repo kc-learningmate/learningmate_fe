@@ -8,7 +8,7 @@ type PieProps = {
 type Seg = {
   label: string;
   value: number;
-  pct: number; // 0~100, 합 100
+  pct: number;
   color: string;
   dasharray: string;
   dashoffset: number;
@@ -24,7 +24,6 @@ const COLORS = [
   '#FB923C',
 ] as const;
 
-// 영어 키 → 한글 라벨
 const LABEL_MAP: Record<string, string> = {
   finance: '금융',
   economy: '경제',
@@ -39,20 +38,17 @@ function normalize(
 ): Array<{ label: string; value: number; pct: number }> {
   if (!stats) return [];
 
-  // [string, number][] 로 명시 + 0/NaN 제거 + 라벨 매핑
   const entries = (Object.entries(stats ?? {}) as Array<[string, number]>)
     .filter(([, v]) => Number.isFinite(v) && v > 0)
     .map(([k, v]) => [LABEL_MAP[k] ?? k, v] as [string, number]);
 
   if (entries.length === 0) return [];
 
-  // 보기 좋게 값 내림차순 정렬 (원하면 제거해도 무방)
   entries.sort((a, b) => b[1] - a[1]);
 
   const total = entries.reduce((s, [, v]) => s + v, 0);
   if (total <= 0) return [];
 
-  // 가장 큰 나머지 방식으로 합 100% 보정
   const raw = entries.map(([label, value]) => {
     const p = (value / total) * 100;
     return { label, value, floor: Math.floor(p), rest: p - Math.floor(p) };
@@ -107,7 +103,6 @@ export default function CategoryPie({ stats, isLoading }: PieProps) {
         </div>
       ) : (
         <div className='flex flex-col items-center gap-6 md:flex-row md:items-start'>
-          {/* 도넛 */}
           <svg
             viewBox='0 0 160 160'
             width={200}
@@ -140,7 +135,6 @@ export default function CategoryPie({ stats, isLoading }: PieProps) {
             <circle cx='80' cy='80' r={radius - stroke / 2} fill='white' />
           </svg>
 
-          {/* 범례 */}
           <ul className='grid w-full grid-cols-2 gap-x-6 gap-y-3 md:max-w-sm'>
             {segments.map((s, i) => (
               <li key={i} className='flex items-center justify-between gap-3'>

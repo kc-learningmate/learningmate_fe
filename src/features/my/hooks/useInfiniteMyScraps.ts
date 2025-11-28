@@ -7,7 +7,6 @@ import {
 import { fetchMyScraps, type MyScrapSort } from '@/features/my/api/scraps';
 import type { ScrapPage } from '@/features/my/types/scraps';
 
-// 다양한 서버 키 대응
 function hasNext(p: any) {
   return Boolean(p?.hasNext ?? p?.hasNextPage ?? p?.pageInfo?.hasNext);
 }
@@ -35,13 +34,12 @@ export function useInfiniteMyScraps(
     QueryKey,
     number
   >({
-    queryKey: ['my', 'scraps', { size, sort }], // ✅ 정렬별 별도 캐시
+    queryKey: ['my', 'scraps', { size, sort }],
     queryFn: ({ pageParam = 0 }) => fetchMyScraps(pageParam, size, sort),
     initialPageParam: 0,
     getNextPageParam: (last, _pages, lastParam) =>
       hasNext(last) ? nextPageFrom(last, lastParam) : undefined,
 
-    // 최신화 전략(마이페이지 진입 시 신선도 확보)
     refetchOnMount: 'always',
     staleTime: 0,
   });

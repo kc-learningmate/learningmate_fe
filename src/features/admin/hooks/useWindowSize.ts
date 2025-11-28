@@ -21,7 +21,6 @@ export const useWindowSize = (): WindowSize => {
 
     window.addEventListener('resize', handleResize);
 
-    // 클린업 함수
     return () => {
       window.removeEventListener('resize', handleResize);
     };

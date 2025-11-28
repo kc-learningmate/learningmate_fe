@@ -4,7 +4,7 @@ import IncorrectQuizAccordionItem from '@/features/my/components/IncorrectQuizIt
 import { useInfiniteIncorrectQuizzes } from '@/features/my/hooks/useInfiniteIncorrectQuizzes';
 import type { IncorrectQuizItem } from '@/features/my/types/quiz';
 
-const PAGE_SIZE = 50; // 훅과 통일
+const PAGE_SIZE = 50;
 const THROTTLE_MS = 400;
 
 export default function IncorrectQuizList() {
@@ -20,7 +20,6 @@ export default function IncorrectQuizList() {
 
   const pages = data?.pages ?? [];
 
-  // ✅ 중복제거 제거: 서버가 같은 id를 주더라도 각 항목은 별도 시도로 취급
   const items = useMemo<IncorrectQuizItem[]>(() => {
     const flat = [];
     for (const p of pages) {
@@ -33,7 +32,6 @@ export default function IncorrectQuizList() {
 
   const totalCount = items.length;
 
-  // 무한스크롤 sentinel & throttle
   const sentinelRef = useRef<HTMLDivElement | null>(null);
   const throttleRef = useRef(false);
 
@@ -68,7 +66,6 @@ export default function IncorrectQuizList() {
     return () => io.disconnect();
   }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
-  // 콘텐츠가 적어 sentinel이 바로 보이는 경우 1회 선요청
   useEffect(() => {
     if (
       !isLoading &&
@@ -104,7 +101,6 @@ export default function IncorrectQuizList() {
         <div className='h-20 animate-pulse rounded-xl bg-zinc-100' />
       )}
 
-      {/* 0건 Empty State */}
       {!isLoading && totalCount === 0 && (
         <div className='py-10 text-center text-sm text-zinc-500'>
           표시할 데이터가 없습니다.
@@ -113,10 +109,8 @@ export default function IncorrectQuizList() {
 
       {totalCount > 0 && (
         <>
-          {/* multiple 확장 허용 */}
           <Accordion.Root type='multiple' className='space-y-2'>
             {items.map((it, idx) => {
-              // ✅ 복합키: id + answerCreatedAt (없으면 idx 보조)
               const uniq = `${it.id}-${it.answerCreatedAt ?? idx}`;
               return (
                 <IncorrectQuizAccordionItem key={uniq} value={uniq} item={it} />
@@ -124,10 +118,8 @@ export default function IncorrectQuizList() {
             })}
           </Accordion.Root>
 
-          {/* sentinel */}
           <div ref={sentinelRef} className='h-8 w-full' />
 
-          {/* 상태 텍스트 / Fallback 버튼 */}
           <div className='mt-3 flex items-center justify-center gap-8 text-sm text-zinc-500'>
             {isFetchingNextPage && <span>Loading...</span>}
             {hasNextPage && items.length > 0 && (

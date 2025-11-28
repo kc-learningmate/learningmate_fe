@@ -135,7 +135,6 @@ export default function Calendar({
         ))}
       </div>
 
-      {/* 일자 그리드 */}
       <div className='grid grid-cols-7 border-l border-t'>
         {Array.from({ length: leading }).map((_, i) => (
           <div
@@ -229,7 +228,6 @@ export default function Calendar({
         ))}
       </div>
 
-      {/* 하단 범례 + 로딩/에러 */}
       <div className='mt-4'>
         <div className='mx-auto max-w-sm rounded-xl border bg-muted/30 px-3 py-3'>
           <div className='flex items-center justify-center gap-4 text-[10px] md:text-xs text-muted-foreground mb-2'>

@@ -4,17 +4,14 @@ import { tz, TZDate } from '@date-fns/tz';
 export const KST_TZ_ID = 'Asia/Seoul';
 export const KST = tz(KST_TZ_ID);
 
-/** 이미 타임존 표기가 있으면 그대로, 없으면 UTC(Z)로 간주해서 파싱 */
 export function coerceNaiveAsUTC(input: string | number | Date): Date {
   if (typeof input === 'string') {
     if (/[Zz]|[+\-]\d{2}:\d{2}$/.test(input)) return new Date(input);
-    // naive ISO → UTC 가정
     return new Date(input + 'Z');
   }
   return new Date(input);
 }
 
-/** KST 달력 '같은 날' 비교 */
 export function isSameKSTDay(
   a: string | number | Date,
   b: string | number | Date
@@ -28,12 +25,10 @@ export function isSameKSTDay(
   );
 }
 
-/** 자유 입력(주로 Date) → KST 기준 'yyyy-MM-dd' */
 export function kstDateKey(input: string | number | Date): string {
   return format(new Date(input), 'yyyy-MM-dd', { in: KST });
 }
 
-/** 백엔드 LocalDateTime(naive, UTC 가정) → KST 기준 'yyyy-MM-dd' */
 export function kstDateKeyFromBackend(iso: string): string {
   const d = coerceNaiveAsUTC(iso);
   return format(d, 'yyyy-MM-dd', { in: KST });
@@ -63,7 +58,6 @@ export function nowKstDateKey(): string {
 }
 
 export function toKstDateKeyFromBackendLocalDateTime(naiveIso: string): string {
-  // 서버 LocalDateTime(타임존 없음) → UTC로 간주해 파싱 → KST 'yyyy-MM-dd'
   const d = /[Zz]|[+\-]\d{2}:\d{2}$/.test(naiveIso)
     ? new Date(naiveIso)
     : new Date(naiveIso + 'Z');

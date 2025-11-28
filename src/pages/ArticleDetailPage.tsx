@@ -14,7 +14,6 @@ export default function ArticleDetailPage() {
   const { member } = useSession();
   const memberId = member?.id;
 
-  // 키 생성 (기사/사용자별)
   const baseKey = useMemo(
     () => (articleId && memberId ? `quiz:${memberId}:${articleId}` : null),
     [articleId, memberId]
@@ -22,11 +21,9 @@ export default function ArticleDetailPage() {
   const progressKey = baseKey ? `${baseKey}:idx` : null;
   const finishedKey = baseKey ? `${baseKey}:finished` : null;
 
-  // 완료/진행 상태
   const [finished, setFinished] = useState(false);
   const [progressIdx, setProgressIdx] = useState(0);
 
-  // 로컬스토리지에서 상태 읽기
   const refreshQuizState = () => {
     if (!progressKey || !finishedKey) return;
     const fin = localStorage.getItem(finishedKey) === '1';
@@ -38,22 +35,18 @@ export default function ArticleDetailPage() {
     setProgressIdx(prog);
   };
 
-  // 처음 로드 & 모달 열고 닫힐 때 갱신
   useEffect(() => {
     refreshQuizState();
-    // storage 이벤트(다른 탭 등)에도 반응
     const onStorage = (e: StorageEvent) => {
       if (e.key === finishedKey || e.key === progressKey) refreshQuizState();
     };
     window.addEventListener('storage', onStorage);
     return () => window.removeEventListener('storage', onStorage);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [progressKey, finishedKey, isQuizModalOpen]);
 
-  // 버튼 텍스트/상태
   const { label, disabled } = useMemo(() => {
     if (finished) return { label: '퀴즈 제출 완료', disabled: true };
-    if (progressIdx > 0) return { label: '퀴즈 이어 풀기', disabled: false }; // 풀던 문제부터 시작
+    if (progressIdx > 0) return { label: '퀴즈 이어 풀기', disabled: false };
     return { label: '퀴즈 풀기', disabled: false };
   }, [finished, progressIdx]);
 
@@ -83,7 +76,6 @@ export default function ArticleDetailPage() {
           isOpen={isQuizModalOpen}
           onClose={() => {
             setIsQuizModalOpen(false);
-            // 닫힐 때도 최신 상태 반영
             refreshQuizState();
           }}
         />

@@ -6,7 +6,6 @@ import LogoMark from './LogoMark';
 export default function Header() {
   return (
     <>
-      {/* 모바일: fixed / 데스크톱: sticky */}
       <header
         className='
           fixed md:sticky top-0 z-50
@@ -15,7 +14,6 @@ export default function Header() {
           border-b border-white/20 text-white
         '
       >
-        {/* 본문과 동일한 컨테이너 규격 */}
         <div className='mx-auto max-w-6xl px-4 md:px-6 h-14 flex items-center justify-between'>
           <Link
             to={ROUTE_PATHS.MAIN}
@@ -29,8 +27,6 @@ export default function Header() {
           <HeaderDropDown />
         </div>
       </header>
-
-      {/* 모바일에서 fixed 헤더 높이만큼 공간 확보 */}
       <div className='h-14 md:h-0' />
     </>
   );

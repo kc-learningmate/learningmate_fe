@@ -34,7 +34,6 @@ export default function FloatingTopButton({ threshold = 240 }: Props) {
       aria-label='맨 위로 이동'
       className={[
         'hidden md:flex',
-        // ✅ 여기 위치 변경: DevTools와 겹치지 않게 더 안쪽으로
         'fixed right-8 bottom-8 md:right-10 md:bottom-10 z-40',
         'h-11 w-11 rounded-full bg-primary text-white',
         'shadow-lg shadow-black/10 backdrop-blur border border-white/20',

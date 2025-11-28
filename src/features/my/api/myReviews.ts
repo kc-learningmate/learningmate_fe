@@ -1,4 +1,3 @@
-// my/api/myReviews.ts
 import { api } from '@/lib/axios';
 import type {
   ReviewListItem,
@@ -6,15 +5,13 @@ import type {
 } from '@/features/reviews/types/types';
 
 export type MyReviewsParams = {
-  page?: number; // 0-based
+  page?: number;
   size?: number;
-  /** UI용 키 */
   sort?: 'latest' | 'liked';
 };
 
 const DEFAULT_SIZE = 10;
 
-// { result } | { data } | 직접 페이지 형태 대응
 function unwrapPage(data: any): ReviewListPageResponse {
   const page = data?.result ?? data?.data ?? data;
   if (!page || !Array.isArray(page.items)) {
@@ -23,14 +20,11 @@ function unwrapPage(data: any): ReviewListPageResponse {
   return page as ReviewListPageResponse;
 }
 
-/** UI sort → 서버 sort(Spring Pageable) */
 function toServerSort(sort?: MyReviewsParams['sort']) {
   switch (sort) {
     case 'latest':
-      // ✅ 최신순: updatedAt desc
       return 'updatedAt,desc';
     case 'liked':
-      // ✅ 좋아요순: likeCounts desc
       return 'likeCounts,desc';
     default:
       return undefined;
@@ -47,7 +41,7 @@ export async function fetchMyReviews(
   const sortParam = toServerSort(params.sort);
 
   const query: Record<string, any> = { page, size };
-  if (sortParam) query.sort = sortParam; // e.g. sort=updatedAt,desc
+  if (sortParam) query.sort = sortParam;
 
   const res = await api.get('/reviews/me', { params: query });
   const pageData = unwrapPage(res.data);

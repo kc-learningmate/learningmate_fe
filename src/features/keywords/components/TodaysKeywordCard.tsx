@@ -8,7 +8,6 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { Search, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
-import * as React from 'react';
 
 export default function TodaysKeywordCard({
   keywordName,
@@ -29,13 +28,11 @@ export default function TodaysKeywordCard({
         aria-label='오늘의 키워드'
         className='relative overflow-hidden rounded-xl border shadow-sm transition-shadow hover:shadow-md'
       >
-        {/* 아주 은은한 배경 악센트 (색상 변화 없음) */}
         <div aria-hidden className='pointer-events-none absolute inset-0'>
           <div className='absolute -top-10 right-0 h-24 w-24 rounded-full bg-primary/5 blur-2xl' />
           <div className='absolute -bottom-12 -left-8 h-28 w-28 rounded-full bg-muted/20 blur-3xl' />
         </div>
 
-        {/* 컴팩트 헤더: 아이콘 + 제목 (테두리/배경 없음) */}
         <CardHeader className='px-4 py-0'>
           <div className='flex items-center justify-center gap-2'>
             <Search className='h-4 w-4' aria-hidden='true' />
@@ -49,7 +46,6 @@ export default function TodaysKeywordCard({
           </CardDescription>
         </CardHeader>
 
-        {/* 얇은 그래디언트 디바이더 */}
         <div className='mx-4 my-0 h-px bg-gradient-to-r from-transparent via-border/50 to-transparent' />
 
         <CardContent className='px-4 py-1'>

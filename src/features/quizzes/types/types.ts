@@ -8,7 +8,7 @@ export type Quiz = {
   question2: string;
   question3: string;
   question4: string;
-  answer: number; // 1 ~ 4
+  answer: number;
   explanation: string;
 };
 
@@ -19,13 +19,13 @@ export type QuizDetail = {
   question2: string;
   question3: string;
   question4: string;
-  answer: '1' | '2' | '3' | '4'; // 1 ~ 4
+  answer: '1' | '2' | '3' | '4';
   explanation: string;
 };
 
 export type MemberQuiz = {
   memberId: number;
-  memberAnswer: string; // '1' | '2' | '3' | '4'
+  memberAnswer: string;
 };
 
 export type QuizItemRaw = {

@@ -42,12 +42,10 @@ import KeywordDetailDialog from './KeywordDetailDialog';
 import KeywordFilterDropdown from './KeywordFilterDropdown';
 import KeywordSortDropdown from './KeywordSortDropdown';
 
-// 10개씩 묶어서 페이지 번호 생성
 const generatePageNumbers = (currentPage: number, totalPages: number) => {
   const pages: number[] = [];
   const pagesPerBlock = 10;
 
-  // 현재 페이지가 속한 블록의 시작 인덱스 계산
   const blockStart = Math.floor(currentPage / pagesPerBlock) * pagesPerBlock;
   const blockEnd = Math.min(blockStart + pagesPerBlock, totalPages);
 
@@ -71,7 +69,6 @@ export default function KeywordSection({
 }: KeywordSectionProps) {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  // useState로 상태 관리
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,
@@ -82,7 +79,6 @@ export default function KeywordSection({
     useState<KeywordCategory | null>(null);
   const [sortOrder, setSortOrder] = useState<SortOrder>('asc');
 
-  // Query 호출
   const { isPending, isError, data } = useKeywordsQuery(
     pagination.pageIndex,
     filteringQuery,
@@ -102,7 +98,6 @@ export default function KeywordSection({
   const handleQueryChange = useCallback(
     debounce((e: ChangeEvent<HTMLInputElement>) => {
       setFilteringQuery(e.target.value);
-      // 검색어 변경 시 첫 페이지로 이동하고 첫 번째 행 선택
       setPagination({ pageIndex: 0, pageSize: 10 });
       setRowSelection({ '0': true });
     }, 500),
@@ -111,14 +106,12 @@ export default function KeywordSection({
 
   const handleFilteringCategoryChange = (category: KeywordCategory | null) => {
     setFilteringCategory(category);
-    // 카테고리 변경 시 첫 페이지로 이동하고 첫 번째 행 선택
     setPagination({ pageIndex: 0, pageSize: 10 });
     setRowSelection({ '0': true });
   };
 
   const handleSortOrderChange = (order: SortOrder) => {
     setSortOrder(order);
-    // 정렬 변경 시 첫 페이지로 이동하고 첫 번째 행 선택
     setPagination({ pageIndex: 0, pageSize: 10 });
     setRowSelection({ '0': true });
   };
@@ -204,7 +197,6 @@ export default function KeywordSection({
     const keyword = table.getSelectedRowModel().rows.at(0)?.original;
     onKeywordSelect(keyword);
 
-    // Update searchParams when a keyword is selected
     if (keyword) {
       setSearchParams({ keywordId: String(keyword.id) });
     }
@@ -212,7 +204,6 @@ export default function KeywordSection({
 
   return (
     <section className='space-y-6'>
-      {/* 헤더 */}
       <div className='space-y-2'>
         <h2 className='text-3xl font-bold tracking-tight'>Keywords</h2>
         <p className='text-sm text-muted-foreground'>
@@ -256,7 +247,6 @@ export default function KeywordSection({
             </div>
           </div>
         </div>
-        {/* 테이블 */}
         <div className='overflow-hidden border rounded-lg bg-white shadow-sm'>
           <Table className='table-fixed'>
             <TableHeader>
@@ -337,7 +327,6 @@ export default function KeywordSection({
             </TableBody>
           </Table>
         </div>
-        {/* 페이지네이션 */}
         <div className='flex gap-1 items-center justify-center flex-wrap py-4'>
           <Button
             variant={'outline'}

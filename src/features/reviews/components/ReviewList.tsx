@@ -26,7 +26,6 @@ type ReviewListProps = {
   query: ReviewListQuery;
   queryKey?: QueryKey;
   extraKeys?: QueryKey[];
-  /** 내 리뷰 숨길지 여부 (기본값: true) */
   excludeMine?: boolean;
 };
 
@@ -106,10 +105,8 @@ export default function ReviewList({
     [pages]
   );
 
-  // ✅ 내 리뷰 제외: memberId === myId 인 항목 제거
   const displayedReviews: ReviewListItem[] = useMemo(() => {
     if (!excludeMine || typeof myId !== 'number') return allReviews;
-    // memberId가 없는 데이터가 섞여 있을 수 있으니 안전 가드
     return allReviews.filter((r) => r.memberId == null || r.memberId !== myId);
   }, [allReviews, excludeMine, myId]);
 
@@ -118,7 +115,6 @@ export default function ReviewList({
   const handleToggle = useCallback(
     (r: ReviewListItem) => {
       setPendingId(r.id);
-      // ← 당신의 훅 시그니처가 currentLiked를 요구하면 유지, 아니면 { reviewId: r.id }만 넘기세요.
       toggleLike.mutate(
         { reviewId: r.id, currentLiked: r.likedByMe },
         { onSettled: () => setPendingId(null) }

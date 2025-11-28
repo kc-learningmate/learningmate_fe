@@ -6,7 +6,6 @@ export function useQuizStatistics() {
   return useQuery<QuizStatistics, Error>({
     queryKey: ['my', 'quiz', 'stats'],
     queryFn: fetchQuizStatistics,
-    // 최신성 유지 + 캐시 우선
     staleTime: 0,
     refetchOnMount: 'always',
     refetchOnReconnect: true,

@@ -33,14 +33,11 @@ export default function ArticleCard({ articlePreview, keyword }: Props) {
         className='group block focus:outline-none'
       >
         <Card className='relative overflow-hidden border border-border/60 transition-all duration-200 hover:shadow-lg hover:border-primary/30 focus-visible:ring-2 focus-visible:ring-primary/60 focus-visible:ring-offset-2 bg-background/60'>
-          {/* decorative accent */}
           <div className='pointer-events-none absolute -right-12 -top-12 h-32 w-32 rounded-full bg-gradient-to-br from-primary/15 to-primary/0 blur-2xl' />
 
           <CardHeader className='gap-2'>
-            {/* press pill */}
             <div className='inline-flex max-w-full items-center gap-2'>
               <span className='inline-flex items-center gap-1 rounded-md border px-2 py-0.5 text-[11px] font-medium text-foreground/90 bg-muted/60'>
-                {/* newspaper icon */}
                 <svg
                   className='h-3.5 w-3.5'
                   viewBox='0 0 24 24'
@@ -69,7 +66,6 @@ export default function ArticleCard({ articlePreview, keyword }: Props) {
             </CardTitle>
 
             <CardDescription className='mt-1 flex items-center gap-2 text-xs md:text-[13px] text-muted-foreground'>
-              {/* clock icon */}
               <svg
                 className='h-3.5 w-3.5'
                 viewBox='0 0 24 24'
