@@ -11,10 +11,8 @@ import type {
 
 const SIZE = 10;
 
-// 공통 언래핑: { result: {...} } 또는 { data: {...} } 또는 바로 페이지
 function unwrapPage(data: any): ReviewListPageResponse {
   const page = data?.result ?? data?.data ?? data;
-  // items가 없으면 경고 한번
   if (!page || !Array.isArray(page.items)) {
     console.warn('Unexpected review page shape:', data);
   }

@@ -1,4 +1,3 @@
-// src/features/reviews/components/ReviewCreateForm.tsx
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -45,11 +44,10 @@ export default function ReviewCreateForm({
 
   const onSubmit = async (data: FormValues) => {
     try {
-      const created = await createMutation.mutateAsync({ memberId, ...data }); // ReviewResponse
+      const created = await createMutation.mutateAsync({ memberId, ...data });
       onCreated?.(created);
       reset({ content1: '' });
     } catch (e) {
-      // 오류는 훅의 onError에서 처리됨(알림)
       console.error(e);
     }
   };

@@ -33,9 +33,7 @@ export default function MyProfile() {
     <section className={TOKENS.sectionGapY}>
       <SectionHeader page='profile' />
 
-      {/* 왼 280px / 오 1fr, 카드 간격 동일 */}
       <div className='grid grid-cols-1 gap-6 md:grid-cols-[280px,1fr]'>
-        {/* 왼쪽: 프로필 이미지 카드 */}
         <aside className={`${TOKENS.card} ${TOKENS.cardPadding} text-center`}>
           <div className='mb-3 text-sm font-medium text-neutral-600'>
             프로필 이미지
@@ -48,7 +46,6 @@ export default function MyProfile() {
           </div>
         </aside>
 
-        {/* 오른쪽: 정보 카드들 */}
         <div className='space-y-6'>
           <div className={`${TOKENS.card} ${TOKENS.cardPadding}`}>
             <div className='text-sm font-medium text-neutral-500'>닉네임</div>

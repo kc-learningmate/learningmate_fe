@@ -1,4 +1,3 @@
-// src/features/reviews/components/ReviewUpdateView.tsx
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -54,7 +53,7 @@ export default function ReviewUpdateView({
   const deleteMutation = useDeleteReviewMutation(articleId, reviewId, {
     onSuccess: () => {
       reset({ content1: '' });
-      onDeleted?.(); // 부모가 forceCreate(true)
+      onDeleted?.();
     },
   });
 

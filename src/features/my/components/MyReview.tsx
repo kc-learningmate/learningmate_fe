@@ -130,7 +130,6 @@ export default function MyReview() {
         </DropdownMenu>
       </div>
 
-      {/* 리스트 카드 컨테이너는 필요 시 카드로 감쌀 수도 있음 */}
       <div className='flex flex-col gap-4'>
         {items.length === 0 && isPending ? (
           <div>Loading...</div>

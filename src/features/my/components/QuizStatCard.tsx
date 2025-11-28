@@ -42,7 +42,7 @@ export default function QuizStatCard({
               cy='50'
               r={radius}
               fill='none'
-              stroke='#F59E0B' // amber-500
+              stroke='#F59E0B'
               strokeWidth={stroke}
               strokeDasharray={`${filled} ${C - filled}`}
               transform='rotate(-90 50 50)'

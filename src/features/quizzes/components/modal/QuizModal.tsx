@@ -51,23 +51,16 @@ export default function QuizModal({ isOpen, onClose }: Props) {
     return <div className='text-red-500'>{msg}</div>;
   }
 
-  // ------------------------------
-  // LocalStorage Keys (사용자+기사별)
-  // ------------------------------
   const baseKey = `quiz:${memberId}:${articleId}`;
   const progressKey = `${baseKey}:idx`;
   const finishedKey = `${baseKey}:finished`;
 
-  // ✅ 다시풀기 키 v2 (기사별 1회 제한)
   const retryKey = `quizRetryUsed:v2:${memberId}:${articleId}`;
 
-  // (선택) 과거 전역/구버전 키 정리
   useEffect(() => {
     try {
-      // 전역/사용자 전역 키 제거
       localStorage.removeItem('quizRetryUsed');
       localStorage.removeItem(`quizRetryUsed:${memberId}`);
-      // 구버전 기사별 키가 있었다면 v2로 마이그레이션 (옵션)
       const legacyPerArticle = localStorage.getItem(
         `quizRetryUsed:${memberId}:${articleId}`
       );
@@ -76,12 +69,8 @@ export default function QuizModal({ isOpen, onClose }: Props) {
         localStorage.removeItem(`quizRetryUsed:${memberId}:${articleId}`);
       }
     } catch {}
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [memberId, articleId]);
 
-  // ------------------------------
-  // 데이터 가공
-  // ------------------------------
   const quizzes: QuizChoiceArr[] = useMemo(() => {
     const list = data ?? [];
     return list.map((q) => ({
@@ -93,9 +82,6 @@ export default function QuizModal({ isOpen, onClose }: Props) {
 
   const total = quizzes.length;
 
-  // ------------------------------
-  // 진행/완료/다시풀기 복원
-  // ------------------------------
   const [idx, setIdx] = useState<number>(() => {
     try {
       const s = localStorage.getItem(progressKey);
@@ -121,7 +107,6 @@ export default function QuizModal({ isOpen, onClose }: Props) {
     }
   });
 
-  // 모달 열릴 때 최신 저장값 동기화
   useEffect(() => {
     if (!isOpen) return;
     try {
@@ -134,19 +119,15 @@ export default function QuizModal({ isOpen, onClose }: Props) {
 
   const current = quizzes[idx];
 
-  // 진행률: 제출 확정된 문제 수만 반영
   const solvedCount = idx + (currentResult ? 1 : 0);
   const progressPct = total > 0 ? Math.round((solvedCount / total) * 100) : 0;
 
-  // ------------------------------
-  // 동작 로직
-  // ------------------------------
   const goNext = () => {
     if (idx === total - 1) {
       setFinished(true);
       try {
         localStorage.setItem(finishedKey, '1');
-        localStorage.setItem(progressKey, String(total)); // 끝으로 저장
+        localStorage.setItem(progressKey, String(total));
       } catch {}
       setSelectedChoice(null);
       setCurrentResult(null);
@@ -162,10 +143,9 @@ export default function QuizModal({ isOpen, onClose }: Props) {
   };
 
   const resetAll = () => {
-    // 다시 풀기 1회 제한 (기사별)
     if (retryUsed) return;
     try {
-      localStorage.setItem(retryKey, '1'); // 이번 기사에 대한 1회 사용 기록
+      localStorage.setItem(retryKey, '1');
     } catch {}
     setRetryUsed(true);
 
@@ -184,7 +164,7 @@ export default function QuizModal({ isOpen, onClose }: Props) {
       solveQuiz(
         {
           memberId: +memberId,
-          memberAnswer: (choiceIdx + 1).toString(), // 1-based
+          memberAnswer: (choiceIdx + 1).toString(),
         },
         +articleId!,
         current.id
@@ -199,7 +179,6 @@ export default function QuizModal({ isOpen, onClose }: Props) {
     onError: () => alert('퀴즈 제출 중 오류가 발생했습니다.'),
   });
 
-  // Enter로 제출/다음
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (!isOpen || !current || finished) return;
@@ -217,7 +196,6 @@ export default function QuizModal({ isOpen, onClose }: Props) {
     return () => window.removeEventListener('keydown', onKey);
   }, [isOpen, current, currentResult, selectedChoice, solveMutation, finished]);
 
-  // UI 파생값(정답 하이라이트는 “맞춘 경우”에만)
   const isAnswered = Boolean(currentResult);
   const userCorrect = isAnswered && currentResult?.status === '정답';
   const correctIdx = isAnswered ? Number(currentResult!.answer) - 1 : -1;
@@ -225,7 +203,6 @@ export default function QuizModal({ isOpen, onClose }: Props) {
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent className='max-w-xl md:max-w-2xl'>
-        {/* 헤더 */}
         <DialogHeader className='space-y-1'>
           <DialogTitle className='flex items-center gap-2 text-xl font-extrabold'>
             <ShieldCheck className='h-5 w-5 text-amber-500' />
@@ -244,7 +221,6 @@ export default function QuizModal({ isOpen, onClose }: Props) {
           )}
         </DialogHeader>
 
-        {/* 진행바: 완료 화면에서는 숨김 */}
         {!finished && (
           <div className='mt-1'>
             <div className='mb-1 flex items-center justify-between text-xs text-zinc-500'>
@@ -262,14 +238,12 @@ export default function QuizModal({ isOpen, onClose }: Props) {
           </div>
         )}
 
-        {/* 본문 */}
         {isPending ? (
           <div className='flex h-32 items-center justify-center text-zinc-500'>
             <Loader2 className='mr-2 h-4 w-4 animate-spin' />
             로딩 중...
           </div>
         ) : finished ? (
-          // 완료 화면
           <div className='relative py-10'>
             <div className='pointer-events-none absolute inset-0 opacity-10 [background:radial-gradient(40%_40%_at_50%_0%,#f59e0b,transparent_70%)]' />
             <div className='relative flex flex-col items-center gap-4'>
@@ -287,7 +261,6 @@ export default function QuizModal({ isOpen, onClose }: Props) {
                 <Button onClick={onClose} className='px-5'>
                   닫기
                 </Button>
-                {/* 다시풀기: 이 기사에서 아직 1회 안썼을 때만 노출 */}
                 {!retryUsed && (
                   <Button
                     variant='outline'
@@ -310,7 +283,6 @@ export default function QuizModal({ isOpen, onClose }: Props) {
           </div>
         ) : (
           <div className='mt-4 space-y-4'>
-            {/* 문제 */}
             <div className='flex items-start gap-2'>
               <HelpCircle className='mt-0.5 h-5 w-5 shrink-0 text-amber-500' />
               <h3 className='text-lg font-bold leading-7'>
@@ -318,15 +290,12 @@ export default function QuizModal({ isOpen, onClose }: Props) {
               </h3>
             </div>
 
-            {/* 보기 */}
             <div className='grid gap-2'>
               {current.choices.map((c, i) => {
                 const isSelected = selectedChoice === i;
 
-                // 초록 하이라이트: 맞춘 경우에만
                 const showCorrect =
                   isAnswered && userCorrect && i === correctIdx;
-                // 오답이면 내 선택만 빨강
                 const showWrong = isAnswered && !userCorrect && isSelected;
 
                 return (
@@ -384,7 +353,6 @@ export default function QuizModal({ isOpen, onClose }: Props) {
               })}
             </div>
 
-            {/* 결과/해설 */}
             {currentResult && (
               <div className='space-y-3'>
                 {currentResult.status === '정답' ? (
@@ -412,7 +380,6 @@ export default function QuizModal({ isOpen, onClose }: Props) {
           </div>
         )}
 
-        {/* 푸터 */}
         {!isPending && !finished && (
           <DialogFooter className='mt-4'>
             {!currentResult ? (

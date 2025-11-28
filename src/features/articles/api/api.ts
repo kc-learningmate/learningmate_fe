@@ -13,13 +13,11 @@ export const fetchArticle = async (articleId: number) => {
   return response.data.result as Article;
 };
 
-/** ✅ 스크랩 추가 */
 export const postArticleScrap = async (articleId: number) => {
   const res = await api.post(`/articles/${articleId}/article-scraps`);
   return res.data;
 };
 
-/** ✅ 스크랩 취소 */
 export const deleteArticleScrap = async (articleId: number) => {
   const res = await api.delete(`/articles/${articleId}/article-scraps`);
   return res.data;

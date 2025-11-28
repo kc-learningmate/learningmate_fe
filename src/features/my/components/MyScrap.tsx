@@ -172,7 +172,6 @@ export default function MyScrap() {
           <div ref={sentinelRef} className='h-8 w-full' />
           <div className='mt-3 flex items-center justify-center gap-8 text-sm text-zinc-500'>
             {isFetchingNextPage && <span>Loading...</span>}
-            {/* non-mobile fallback button */}
           </div>
         </>
       )}

@@ -11,7 +11,6 @@ export default function EditArticlePage() {
 
   return (
     <main className='mx-auto px-4 py-8 max-w-7xl flex flex-col gap-16'>
-      {/* 페이지 헤더 */}
       <div className='space-y-3 border-b pb-6'>
         <h1 className='text-4xl font-bold tracking-tight'>
           Edit Article & Quiz
@@ -21,7 +20,6 @@ export default function EditArticlePage() {
         </p>
       </div>
 
-      {/* 콘텐츠 영역 */}
       <div className='grid grid-cols-1 lg:grid-cols-2 gap-12'>
         <EditArticleSection keywordId={+keywordId} articleId={+articleId} />
         <EditQuizSection articleId={+articleId} />

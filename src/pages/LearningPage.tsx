@@ -47,7 +47,6 @@ export default function LearningPage() {
 
         <article className='flex flex-col lg:flex-row gap-10 lg:gap-20 w-full'>
           <section className='flex flex-col gap-4 w-full lg:w-1/2'>
-            {/* Video 영역 */}
             {showSkeleton || isVideoPending ? (
               <Skeleton className='flex flex-col gap-4 w-full lg:w-1/2 aspect-video' />
             ) : canShowVideo ? (

@@ -16,7 +16,6 @@ import ArticleDetailDialog from '@/features/articles/components/ArticleDetailDia
 type Props = {
   item: IncorrectQuizItem;
   value: string;
-  /** (옵션) 상세 모달 내에서 스크랩 상태 변경 시 상위 리스트 동기화가 필요하면 전달 */
   onScrapChange?: (articleId: number, next: boolean) => void;
 };
 
@@ -39,7 +38,6 @@ export default function IncorrectQuizItem({
 
   return (
     <Accordion.Item value={value} className='rounded-xl border bg-white'>
-      {/* 헤더 */}
       <Accordion.Header asChild>
         <Accordion.Trigger
           className='
@@ -73,7 +71,6 @@ export default function IncorrectQuizItem({
             </span>
           )}
 
-          {/* chevron */}
           <svg
             className='chev ml-2 h-4 w-4 transition-transform'
             viewBox='0 0 24 24'
@@ -90,7 +87,6 @@ export default function IncorrectQuizItem({
         </Accordion.Trigger>
       </Accordion.Header>
 
-      {/* 컨텐츠 */}
       <Accordion.Content
         className='
           px-3 pb-3 transition-all duration-300 ease-out
@@ -99,7 +95,6 @@ export default function IncorrectQuizItem({
         '
       >
         <div className='rounded-xl border bg-white p-4 shadow-sm'>
-          {/* 키워드 카드 */}
           <div className='mb-3 rounded-md border border-yellow-300 bg-yellow-50 p-3 text-sm text-yellow-800'>
             <div className='font-semibold text-yellow-900'>
               {item.article.keyword?.name ?? '키워드'}
@@ -109,13 +104,11 @@ export default function IncorrectQuizItem({
             </div>
           </div>
 
-          {/* 문제 */}
           <p className='mt-1 text-[15px] leading-6 text-zinc-800'>
             <span className='mr-1 font-extrabold'>Q.</span>
             <span className='font-medium'>{item.description}</span>
           </p>
 
-          {/* 보기 */}
           <ul className='mt-3 grid gap-2 sm:grid-cols-2'>
             {options.map((opt, i) => {
               const isCorrect = i === correctIdx;
@@ -148,7 +141,6 @@ export default function IncorrectQuizItem({
             })}
           </ul>
 
-          {/* 해설 */}
           <div className='mt-3 rounded-xl bg-zinc-50 p-3 text-sm leading-6 text-zinc-700'>
             <span className='inline-flex items-center gap-1 font-semibold'>
               <BookOpen className='h-4 w-4' /> 해설
@@ -156,7 +148,6 @@ export default function IncorrectQuizItem({
             <p className='mt-1'>{item.explanation}</p>
           </div>
 
-          {/* 기사 바로가기: 공용 ArticleDetailDialog 재사용 */}
           <div className='mt-3'>
             <ArticleDetailDialog
               articleId={item.article.id}

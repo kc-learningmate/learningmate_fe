@@ -3,7 +3,7 @@ import { PAGE_META } from '../config/pageMeta';
 
 type Props = {
   page: PageKey;
-  className?: string; // 필요 시 외부 여백 제어
+  className?: string;
 };
 
 export default function SectionHeader({ page, className = '' }: Props) {

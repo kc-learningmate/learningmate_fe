@@ -27,14 +27,12 @@ type Props = {
   keywordIconSrc?: string;
 };
 
-// mm:ss
 const toMMSS = (s: number) => {
   const m = Math.floor(s / 60);
   const sec = Math.max(0, s % 60);
   return `${String(m)}:${String(sec).padStart(2, '0')}`;
 };
 
-// lightweight confetti
 function ConfettiBurst({ show }: { show: boolean }) {
   const PARTICLES = 30;
   const COLORS = ['#22c55e', '#3b82f6', '#f59e0b', '#ef4444', '#a855f7'];
@@ -75,7 +73,6 @@ export default function VideoPlayer({
   const rafRef = useRef<number | null>(null);
   const hasSavedRef = useRef(false);
 
-  // 🚀 Zustand: 필요한 필드만 구독하여 리렌더 최소화
   const watchedSeconds = useVideoStore((s) => s.watchedSeconds);
   const duration = useVideoStore((s) => s.duration);
   const lastTime = useVideoStore((s) => s.lastTime);
@@ -93,15 +90,13 @@ export default function VideoPlayer({
   );
 
   const [confetti, setConfetti] = useState(false);
-  const [, forceTick] = useState(0); // 진행률 실시간 표시용(플레이 중에만 틱)
+  const [, forceTick] = useState(0);
 
-  // init daily & keyword
   useEffect(() => {
     ensureKstDay();
     setTodaysKeywordId(todaysKeyword.id);
   }, [todaysKeyword.id, ensureKstDay, setTodaysKeywordId]);
 
-  // live 진행률 계산(스토어는 증분만 기록; UI는 재생 중에만 틱)
   const liveDiff = startTimeRef.current
     ? Math.floor((Date.now() - startTimeRef.current) / 1000)
     : 0;
@@ -119,7 +114,6 @@ export default function VideoPlayer({
     [duration]
   );
 
-  // 플레이 중에만 rAF 틱을 돌려서 진행률 UI 갱신(불필요한 타이머 제거)
   const startRafTick = useCallback(() => {
     if (rafRef.current) return;
     const loop = () => {
@@ -135,7 +129,6 @@ export default function VideoPlayer({
     }
   }, []);
 
-  // 안전 호출
   const safeGetCurrentTime = (player: any): number => {
     try {
       const v =
@@ -157,12 +150,10 @@ export default function VideoPlayer({
     }
   };
 
-  // ✅ 한 번만 성공/전송되도록 보장하는 완료 함수
   const finishOnce = useCallback(() => {
-    const didComplete = completeOnce(); // 상태 내부에서 isCompleted 체크 + 클램프
+    const didComplete = completeOnce();
     if (!didComplete) return;
 
-    // 서버 전송도 한 번만
     if (!hasSavedRef.current && !saving) {
       hasSavedRef.current = true;
       saveMission();
@@ -173,13 +164,11 @@ export default function VideoPlayer({
     setTimeout(() => setConfetti(false), 1600);
   }, [completeOnce, saveMission, saving]);
 
-  // 미션 감시(800ms) — 완료/중복 가드 철저
   const startWatchdog = useCallback(() => {
     if (watchdogRef.current) return;
     if (useVideoStore.getState().isCompleted) return;
 
     watchdogRef.current = setInterval(() => {
-      // 진행 중에도 완료되었으면 즉시 종료
       if (useVideoStore.getState().isCompleted) {
         clearInterval(watchdogRef.current!);
         watchdogRef.current = null;
@@ -190,7 +179,6 @@ export default function VideoPlayer({
         : 0;
       const total = useVideoStore.getState().watchedSeconds + diff;
       if (total >= MISSION_TARGET) {
-        // 완료 처리(스토어 내부에서 클램프)
         finishOnce();
         clearInterval(watchdogRef.current!);
         watchdogRef.current = null;
@@ -205,7 +193,6 @@ export default function VideoPlayer({
     }
   }, []);
 
-  // 유튜브 플레이어 초기화
   const initPlayer = useCallback(() => {
     const YT = (window as any).YT;
     if (!YT?.Player || !containerRef.current) return;
@@ -229,14 +216,12 @@ export default function VideoPlayer({
         onStateChange: (e: any) => {
           const S = window.YT.PlayerState;
           if (e.data === S.PLAYING) {
-            // ✅ 이미 완료면 타이머/틱을 구동하지 않음
             if (useVideoStore.getState().isCompleted) return;
 
             if (!startTimeRef.current) startTimeRef.current = Date.now();
             startWatchdog();
             startRafTick();
           } else if (e.data === S.PAUSED || e.data === S.ENDED) {
-            // 재생 세션 종료 시 증분 반영(완료가 아니면만)
             if (!useVideoStore.getState().isCompleted && startTimeRef.current) {
               const diff = Math.floor(
                 (Date.now() - startTimeRef.current) / 1000
@@ -263,7 +248,6 @@ export default function VideoPlayer({
     videoId,
   ]);
 
-  // 스크립트 로드 + 언마운트 정리
   useEffect(() => {
     if (window.YT?.Player) initPlayer();
     else {
@@ -279,7 +263,6 @@ export default function VideoPlayer({
       window.onYouTubeIframeAPIReady = initPlayer;
     }
     return () => {
-      // 세션 마무리
       if (startTimeRef.current) {
         const diff = Math.floor((Date.now() - startTimeRef.current) / 1000);
         if (diff > 0 && !useVideoStore.getState().isCompleted)
@@ -291,7 +274,6 @@ export default function VideoPlayer({
     };
   }, [initPlayer, setWatchedSeconds, stopRafTick, stopWatchdog]);
 
-  // 상태 칩 톤
   const tone = useMemo(() => {
     if (isCompleted || progress >= 100) {
       return {
@@ -381,7 +363,6 @@ export default function VideoPlayer({
         <CardContent className='pt-2 pb-2'>
           <div className='relative aspect-video overflow-hidden rounded-2xl ring-1 ring-black/5'>
             <div ref={containerRef} className='h-full w-full' />
-            {/* 필요 시 로딩 스피너 등을 여기에 추가 가능 */}
           </div>
         </CardContent>
 

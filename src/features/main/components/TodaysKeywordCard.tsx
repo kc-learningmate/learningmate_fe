@@ -1,4 +1,3 @@
-// src/features/main/components/TodaysKeywordCard.tsx
 import {
   Card,
   CardHeader,

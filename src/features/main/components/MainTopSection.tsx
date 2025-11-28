@@ -4,7 +4,7 @@ import { useTodaysKeywordQuery } from '@/features/keywords/hooks/useTodaysKeywor
 import { useMainStudyAchievements } from '@/features/main/hooks/useMainStudyAchievements';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router';
-import { Sparkles } from 'lucide-react'; // ✅ 아이콘 추가
+import { Sparkles } from 'lucide-react';
 
 export default function MainTopSection() {
   const { data: todayKeyword, isLoading: kwLoading } = useTodaysKeywordQuery();
@@ -34,7 +34,6 @@ export default function MainTopSection() {
           keywordDesc={keywordDesc}
         />
 
-        {/* ✅ 가운데 작은 버튼 + 아이콘 */}
         <div className='flex justify-center mt-3 mb-4'>
           <Button
             size='sm'
@@ -42,7 +41,7 @@ export default function MainTopSection() {
             className='flex items-center gap-1 text-xs px-3 py-1 rounded-full border-amber-300 text-amber-700 hover:bg-amber-50'
             onClick={() => navigate('/learning')}
           >
-            <Sparkles className='h-3 w-3 text-amber-600' /> {/* ✨ 아이콘 */}
+            <Sparkles className='h-3 w-3 text-amber-600' />
             오늘의 키워드 바로가기
           </Button>
         </div>

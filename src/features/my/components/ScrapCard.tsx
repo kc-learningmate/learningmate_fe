@@ -8,7 +8,6 @@ import ArticleDetailDialog from '@/features/articles/components/ArticleDetailDia
 
 type Props = {
   item: ScrapItem;
-  /** 목록에서 낙관적 갱신 + invalidate까지 처리하는 핸들러 */
   onToggleScrap: (id: number, next: boolean) => void;
 };
 
@@ -23,12 +22,10 @@ export default function ScrapCard({ item, onToggleScrap }: Props) {
 
   return (
     <article className='rounded-2xl border bg-white p-4 shadow-sm transition hover:shadow-md'>
-      {/* 제목 */}
       <h2 className='line-clamp-2 text-lg font-bold leading-snug'>
         {item.title}
       </h2>
 
-      {/* 메타: 날짜 / 조회수 / 스크랩 수 */}
       <div className='mt-1 flex items-center gap-4 text-sm text-zinc-600'>
         {dateLabel && (
           <span className='inline-flex items-center gap-1.5 leading-none'>
@@ -46,14 +43,12 @@ export default function ScrapCard({ item, onToggleScrap }: Props) {
         </span>
       </div>
 
-      {/* 본문 일부 */}
       {item.content && (
         <p className='mt-3 line-clamp-3 whitespace-pre-line text-sm text-zinc-700'>
           {item.content}
         </p>
       )}
 
-      {/* 하단: 더보기(모달) + 스크랩 토글 */}
       <div className='mt-4 flex items-center justify-between'>
         <ArticleDetailDialog
           articleId={item.id}

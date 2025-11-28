@@ -1,4 +1,3 @@
-// src/features/reviews/hooks/useReviewMutations.ts
 import { QUERY_KEYS } from '@/constants/querykeys';
 import {
   useMutation,
@@ -20,7 +19,6 @@ function defaultOnError(error: unknown) {
   }
 }
 
-// ✅ MyReview(내 리뷰 무한스크롤) 리스트 최신화를 위한 invalidate helper
 const invalidateMyReviews = async (qc: ReturnType<typeof useQueryClient>) => {
   await qc.invalidateQueries({ queryKey: [QUERY_KEYS.REVIEWS, 'me'] });
 };
@@ -34,23 +32,17 @@ export function useUpdateReviewMutation(
 
   return useMutation<ReviewResponse, AxiosError, ReviewForm>({
     mutationKey: [QUERY_KEYS.REVIEW, 'update', articleId, reviewId],
-    // 🔧 AxiosResponse -> ReviewResponse로 매핑
     mutationFn: async (payload: ReviewForm) => {
       const res = await updateReview(payload, reviewId);
-      // res가 AxiosResponse<ReviewResponse> 라면:
       return (res as any).data as ReviewResponse;
-      // 만약 updateReview가 이미 ReviewResponse를 준다면 위 한 줄을 `return res;`로 바꿔주세요.
     },
     onSuccess: async (updated, variables, ctx) => {
       alert('수정이 완료되었습니다.');
 
-      // ✅ 단건 캐시 즉시 갱신 (useReviewQuery 키에 맞춤)
       qc.setQueryData([QUERY_KEYS.REVIEW, articleId], updated);
 
-      // 보수적 무효화
       await qc.invalidateQueries({ queryKey: [QUERY_KEYS.REVIEW, articleId] });
 
-      // ✅ 내 리뷰 목록 최신화
       await invalidateMyReviews(qc);
 
       options?.onSuccess?.(updated, variables, ctx);
@@ -72,17 +64,14 @@ export function useDeleteReviewMutation(
 
   return useMutation<unknown, AxiosError, void>({
     mutationKey: [QUERY_KEYS.REVIEW, 'delete', articleId, reviewId],
-    mutationFn: () => deleteReview(reviewId), // void | unknown ok
+    mutationFn: () => deleteReview(reviewId),
     onSuccess: async (data, variables, ctx) => {
       alert('리뷰가 삭제되었습니다.');
 
-      // ✅ 단건 캐시를 즉시 "없음" 상태로
       qc.setQueryData([QUERY_KEYS.REVIEW, articleId], null);
 
-      // 보수적 무효화
       await qc.invalidateQueries({ queryKey: [QUERY_KEYS.REVIEW, articleId] });
 
-      // ✅ 내 리뷰 목록 최신화
       await invalidateMyReviews(qc);
 
       options?.onSuccess?.(data, variables, ctx);
@@ -103,7 +92,6 @@ export function useCreateReviewMutation(
 
   return useMutation<ReviewResponse, AxiosError, ReviewForm>({
     mutationKey: [QUERY_KEYS.REVIEW, 'create', articleId],
-    // 🔧 AxiosResponse -> ReviewResponse로 매핑
     mutationFn: async (payload: ReviewForm) => {
       const res = await postReview(payload, articleId);
       return (res as any).data as ReviewResponse;
@@ -111,13 +99,10 @@ export function useCreateReviewMutation(
     onSuccess: async (created, variables, ctx) => {
       alert('작성이 완료되었습니다.');
 
-      // ✅ 단건 캐시 즉시 갱신 → 새로고침 없이 보임
       qc.setQueryData([QUERY_KEYS.REVIEW, articleId], created);
 
-      // 보수적 무효화(동기화)
       await qc.invalidateQueries({ queryKey: [QUERY_KEYS.REVIEW, articleId] });
 
-      // ✅ 내 리뷰 목록 최신화
       await invalidateMyReviews(qc);
 
       options?.onSuccess?.(created, variables, ctx);

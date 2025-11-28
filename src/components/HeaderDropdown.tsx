@@ -64,7 +64,6 @@ export default function HeaderDropDown() {
           bg-popover/95 backdrop-blur-sm font-semibold
         '
       >
-        {/* 상단 프로필 카드 (여백 축소) */}
         <div className='rounded-md border bg-card/60 px-2 py-1.5 mb-1.5'>
           <DropdownMenuLabel className='p-0 text-sm font-medium'>
             <MemberProfile />

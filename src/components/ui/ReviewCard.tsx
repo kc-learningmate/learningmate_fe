@@ -44,16 +44,11 @@ function ReviewCardImpl({
 
   const liked = likeReadOnly ? true : !!review.likedByMe;
   const likeCount = review.likeCount ?? 0;
-
-  // 아바타 톤과 맞춘 배지 색상 (있으면 사용, 없으면 오렌지 폴백)
   const idBadgeBg = (review as any).imageColor ?? '#FDBA4D';
 
-  // 본문이 5줄을 초과해 실제로 잘리는지 체크 → 잘릴 때만 버튼 노출
   useEffect(() => {
     const el = contentRef.current;
     if (!el) return;
-
-    // 펼쳐진 상태에선 측정하지 않음(버튼을 유지하기 위함)
     if (expanded) return;
 
     const rAF = requestAnimationFrame(() => {
@@ -70,14 +65,10 @@ function ReviewCardImpl({
         role='region'
         aria-label={`리뷰: ${review.title}`}
       >
-        {/* decorative accent */}
         <div className='pointer-events-none absolute -right-12 -top-12 h-32 w-32 rounded-full bg-gradient-to-br from-primary/15 to-primary/0 blur-2xl' />
-
         <CardHeader className='pb-1'>
-          {/* 상단: 왼쪽 텍스트, 오른쪽 아바타 */}
           <div className='flex items-start justify-between gap-3'>
             <div className='min-w-0'>
-              {/* 닉네임(오렌지) + ID(그레이) 배지 */}
               <div className='inline-flex items-center gap-2'>
                 <span className='inline-flex items-center gap-1 rounded-md border px-2 py-0.5 text-[11px] font-medium bg-muted/60'>
                   #{review.id}
@@ -129,7 +120,6 @@ function ReviewCardImpl({
               </CardDescription>
             </div>
 
-            {/* 아바타: 헤더 우측 끝 */}
             <figure className='shrink-0 pt-1'>
               <Avatar className='h-14 w-14 rounded-full shadow-sm'>
                 <AvatarImage
@@ -144,10 +134,8 @@ function ReviewCardImpl({
           </div>
         </CardHeader>
 
-        {/* divider (여백 축소) */}
         <div className='mx-6 h-px bg-border/80' />
 
-        {/* 본문: 기본 5줄, 자세히/간략히 토글 */}
         <CardContent className='px-6 pt-3 pb-4'>
           <p
             ref={contentRef}
@@ -160,7 +148,6 @@ function ReviewCardImpl({
             {review.content1}
           </p>
 
-          {/* 5줄 초과일 때만 토글 버튼 */}
           {isOverflowing && (
             <button
               type='button'
@@ -191,7 +178,6 @@ function ReviewCardImpl({
           )}
         </CardContent>
 
-        {/* footer (여백 축소) */}
         <CardFooter className='px-6 pt-0 pb-4'>
           <div className='mt-1 flex w-full items-center border-t pt-3'>
             <span className='relative inline-grid h-8 w-8 place-items-center'>

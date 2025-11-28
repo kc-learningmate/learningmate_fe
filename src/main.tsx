@@ -11,7 +11,7 @@ import { router } from './router/router';
 import FloatingTopButton from './components/FloatingTopButton';
 
 function GlobalRolloverProvider() {
-  useKstMidnightRollover(); // KST 자정마다 키워드/리뷰/캘린더 invalidate
+  useKstMidnightRollover();
   return <RouterProvider router={router} />;
 }
 

@@ -1,4 +1,3 @@
-// 공통 메타 + UI 토큰 (모든 탭에서 재사용)
 export const PAGE_META = {
   profile: {
     title: '프로필',
@@ -24,14 +23,9 @@ export const PAGE_META = {
 
 export type PageKey = keyof typeof PAGE_META;
 
-// ✅ 모든 섹션에서 동일하게 쓰는 UI 토큰들
 export const TOKENS = {
-  // 섹션 상단 제목/설명 아래 기본 간격
   sectionGapY: 'space-y-4 md:space-y-6',
-  // 카드 내부 패딩 (학습 성취도 카드와 동일)
   cardPadding: 'p-5 md:p-6',
-  // 카드 공통 클래스
   card: 'rounded-2xl border border-neutral-200',
-  // 본문 컨테이너 패딩 (상황 따라 선택적으로 사용)
   containerPad: 'p-4 md:p-6 lg:p-8',
 };

@@ -9,7 +9,6 @@ export default function AdminPage() {
 
   return (
     <main className='flex flex-col gap-16 mx-4 max-w-7xl lg:mx-auto py-8'>
-      {/* 페이지 헤더 */}
       <div className='space-y-3 border-b pb-6'>
         <h1 className='text-4xl font-bold tracking-tight'>Admin Page</h1>
         <p className='text-base text-muted-foreground'>
@@ -17,10 +16,8 @@ export default function AdminPage() {
         </p>
       </div>
 
-      {/* 키워드 섹션 */}
       <KeywordSection onKeywordSelect={setKeyword} />
 
-      {/* 비디오 & Article 섹션 */}
       {keyword && (
         <div className='space-y-16'>
           <VideoSection keywordId={keyword.id} video={keyword.video} />
@@ -28,7 +25,6 @@ export default function AdminPage() {
         </div>
       )}
 
-      {/* 키워드 미선택 상태 안내 */}
       {!keyword && (
         <div className='flex flex-col items-center justify-center py-20 px-4 border-2 border-dashed border-muted rounded-lg bg-muted/5'>
           <p className='text-muted-foreground text-center'>
